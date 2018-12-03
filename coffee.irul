@@ -1,0 +1,19 @@
+when HTTP_REQUEST {
+ set coffee { 5)3;; 4(3;; 2+1-5+1;; 2|1 5|1]1;; 2\1-5/1;;_9_2;;\1_9/1}
+ set response "Coffee 3.0\n\n"
+ switch [HTTP::uri] {
+  "/coffee" {
+   foreach {mychar myrepeat} [ split $coffee {} ] {
+    if {$mychar equals ";"} {
+      append response "[format "%-15s" $cuppa]$cuppa\n"
+      unset cuppa
+    } else {
+      append cuppa [string repeat $mychar $myrepeat]
+    }
+   }
+   append response "\n\nYour coffee's are ready.\n\n"
+   append response "The Virtual Coffee Machine"
+   HTTP::respond 200 content $response Content-Type "text/plain" Connection Close
+   event disable all 
+  }
+ }
